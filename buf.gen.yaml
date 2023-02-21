@@ -1,0 +1,24 @@
+version: v1
+managed:
+  enabled: true
+  go_package_prefix:
+    default: muvtuberdriver/gen
+plugins:
+  # explore plugins: https://buf.build/plugins
+
+  # golang: muvtuberdriver
+  # message types
+  - plugin: buf.build/protocolbuffers/go
+    out: gen
+    opt: paths=source_relative
+  # grpc stubs
+  - plugin: buf.build/grpc/go
+    out: gen
+    opt:
+      - paths=source_relative
+  
+  # python: musharing_chatbot
+  - plugin: buf.build/grpc/python
+    out: gen
+  - plugin: buf.build/protocolbuffers/python
+    out: gen
