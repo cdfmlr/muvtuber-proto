@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package muvtuber.chatbot.chatgpt_chatbot.v1;
+
+message NewSessionRequest {
+    // access_token from https://chat.openai.com/api/auth/session for ChatGPT authentication.
+    string access_token = 1;
+    // initial_prompt is the prompt to start a conversation.
+    // e.g. "Hi, I'm ChatGPT. How are you?"
+    // 
+    // GitHub Copilot 想对 ChatGPT 说：「Hi, I'm ChatGPT.」
+    // 哈哈哈，每一个 GPT-3 都有一个 ChatGPT 梦。
+    string initial_prompt = 2;
+}
+
+message NewSessionResponse {
+    // session_id is used to identify a conversation with a ChatGPT.
+    string session_id = 1;
+    string initial_response = 2;
+}
+
+message DeleteSessionRequest {
+    // session_id is used to identify a conversation with a ChatGPT.
+    string session_id = 1;
+}
+
+message DeleteSessionResponse {
+    // session_id is used to identify a conversation with a ChatGPT.
+    string session_id = 1;
+}
+
+message ChatRequest {
+    // session_id is used to identify a conversation with a ChatGPT.
+    string session_id = 1;
+    // prompt is the user's input.
+    string prompt = 2;
+}
+
+message ChatResponse {
+    // response is the ChatGPT's response.
+    string response = 2;
+}
+
+service ChatGPTService {
+    // NewSession creates a new session with ChatGPT.
+    // Input: access_token (string) and initial_prompt (string).
+    // Output: session_id (string).
+    rpc NewSession(NewSessionRequest) returns (NewSessionResponse);
+    // Chat sends a prompt to ChatGPT and receives a response.
+    // Input: session_id (string) and prompt (string).
+    // Output: response (string).
+    rpc Chat(ChatRequest) returns (ChatResponse);
+    // DeleteSession deletes a session with ChatGPT.
+    // Input: session_id (string).
+    // Output: session_id (string).
+    rpc DeleteSession(DeleteSessionRequest) returns (DeleteSessionResponse);
+}
