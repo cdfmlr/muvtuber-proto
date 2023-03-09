@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+// 统一的、实现无关的 chatbot api
+package muvtuber.chatbot.v2;
+
+message NewSessionRequest {
+    // config for authentication and others.（给构造函数的参数）
+    // 具体内容由服务实现自定：可以是 JSON 来传 access_token, api_key, model, ...
+    // 例如 `{"version": 3, "api_key": "xxx"}`
+    string config = 1;
+    // initial_prompt is the prompt to start a conversation.
+    // e.g. "Hi."
+    string initial_prompt = 2;
+}
+
+message NewSessionResponse {
+    // session_id is used to identify a conversation with a Chatbot.
+    string session_id = 1;
+    // initial_response is the Chatbot's response to the initial_prompt.
+    string initial_response = 2;
+}
+
+message DeleteSessionRequest {
+    // session_id is used to identify a conversation with a Chatbot.
+    string session_id = 1;
+}
+
+message DeleteSessionResponse {
+    // session_id is used to identify a conversation with a Chatbot.
+    string session_id = 1;
+}
+
+message ChatRequest {
+    // session_id is used to identify a conversation with a Chatbot.
+    string session_id = 1;
+    // prompt is the user's input.
+    string prompt = 2;
+}
+
+message ChatResponse {
+    // response is the Chatbot's response.
+    string response = 2;
+}
+
+service ChatbotService {
+    // NewSession creates a new session with Chatbot.
+    // Input: access_token (string) and initial_prompt (string).
+    // Output: session_id (string).
+    rpc NewSession(NewSessionRequest) returns (NewSessionResponse);
+    // Chat sends a prompt to Chatbot and receives a response.
+    // Input: session_id (string) and prompt (string).
+    // Output: response (string).
+    rpc Chat(ChatRequest) returns (ChatResponse);
+    // DeleteSession deletes a session with Chatbot.
+    // Input: session_id (string).
+    // Output: session_id (string).
+    rpc DeleteSession(DeleteSessionRequest) returns (DeleteSessionResponse);
+}
