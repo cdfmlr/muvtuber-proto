@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+// Sayer is the TTS (Text To Speech) service. It is used to convert text to
+// speech
+package muvtuber.sayer.v1;
+
+message SayRequest {
+    // The role of the speaker
+    string role = 1;
+    // The text to be converted to speech
+    string text = 2;
+}
+
+message SayResponse {
+    // The format of the audio file
+    string format = 1;
+    // The audio file containing the speech
+    bytes audio = 2;
+}
+
+// SayerService is a TTS (Text To Speech) service. It is used to convert text to
+// speech.
+service SayerService {
+    // Say converts text to speech and returns the audio file.
+    rpc Say(SayRequest) returns (SayResponse);
+}
